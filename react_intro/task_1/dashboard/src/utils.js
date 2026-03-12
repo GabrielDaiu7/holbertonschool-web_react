@@ -1,17 +1,9 @@
-export function getCurrentYear() {
-  const date = new Date();
-  return date.getFullYear();
-}
+export const getCurrentYear = () => new Date().getFullYear();
 
-export function getFooterCopy(isIndex) {
-  if (isIndex === true) {
-    return 'Holberton School';
-  } else {
-    return 'Holberton School main dashboard';
-  }
-}
+export const getFooterCopy = (isIndex) =>
+  isIndex ? 'Holberton School' : 'Holberton School main dashboard';
 
-// CommonJS compatibility for test runner
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { getCurrentYear, getFooterCopy };
-}
+export default {
+  getCurrentYear,
+  getFooterCopy,
+};
