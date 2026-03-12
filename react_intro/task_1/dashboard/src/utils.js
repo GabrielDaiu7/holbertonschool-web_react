@@ -10,3 +10,8 @@ export function getFooterCopy(isIndex) {
     return 'Holberton School main dashboard';
   }
 }
+
+// CommonJS compatibility for test runner
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { getCurrentYear, getFooterCopy };
+}
