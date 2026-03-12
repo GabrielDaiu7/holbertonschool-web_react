@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Notifications from "./Notifications";
-import { getCurrentYear, getFooterCopy } from "../utils";
+import { getCurrentYear, getFooterCopy } from "./utils";
 
 function App() {
   return (
