@@ -1,12 +1,10 @@
-import React from "react";
-import "./Notifications.css";
-
-function Notifications() {
+import './Notifications.css';
+const Notifications = () => {
   return (
-    <div className="Notifications">
-      <p>Here is the list of notifications</p>
+      <div className='notification-items'>
+          <p>Here is the list of notifications</p>
     </div>
   );
-}
+};
 
 export default Notifications;

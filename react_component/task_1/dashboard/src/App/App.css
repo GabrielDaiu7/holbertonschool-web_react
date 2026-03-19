@@ -1,0 +1,7 @@
+.notifications-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom-style: solid;
+    border-color: #e1003c;
+}

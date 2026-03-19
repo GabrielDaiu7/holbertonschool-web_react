@@ -1,0 +1,21 @@
+.notifications {
+    display: flex;
+    justify-content: flex-start;
+    border-style: dotted;
+    border-color: #e1003c;
+    padding: 2px;
+    font-size: 12px;
+}
+
+.notifications P {
+    padding: 0 0 0 1rem;
+}
+
+.notifications img {
+    width: 20px;
+    height: 20px;
+}
+
+li {
+    color: red;
+}

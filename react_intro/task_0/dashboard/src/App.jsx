@@ -1,25 +1,30 @@
-import './App.css';
 import logo from './assets/holberton-logo.jpg';
 
-function App() {
-  const year = new Date().getFullYear();
+
+import './App.css'
+
+const App = () => {
+  const date = new Date()
+
 
   return (
-    <div className="App">
-      <div className="App-header">
+    <>
+
+      <div className='App-header'>
         <img src={logo} alt="holberton logo" />
-        <h1>School dashboard</h1>
+        <h1 style={{ color: '#e1003c' }}>School dashboard</h1>
+      </div>
+      <div className='App-body'>
+
+        <p >Login to access the full dashboard</p>
       </div>
 
-      <div className="App-body">
-        <p>Login to access the full dashboard</p>
-      </div>
+      <div className='App-footer'>
 
-      <div className="App-footer">
-        <p>Copyright {year} - holberton School</p>
+        <p >Copyright {date.getFullYear()} - holberton School</p>
       </div>
-    </div>
-  );
+    </>
+  )
 }
 
 export default App;
