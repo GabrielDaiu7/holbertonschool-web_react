@@ -4,7 +4,7 @@ import AppContext from "../Context/context";
 import "./Footer.css";
 
 const Footer = () => {
-    const { user, logOut } = useContext(AppContext);
+    const { user } = useContext(AppContext);
 
     return (
         <div className="App-footer">
@@ -13,11 +13,7 @@ const Footer = () => {
             </p>
             {user.isLoggedIn && (
                 <p>
-                    Welcome {user.email} (
-                    <a href="#logout" onClick={logOut}>
-                        logout
-                    </a>
-                    )
+                    <a href="#contact">Contact us</a>
                 </p>
             )}
         </div>
