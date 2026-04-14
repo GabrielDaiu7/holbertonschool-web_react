@@ -13,6 +13,10 @@ import { getLatestNotification } from "../utils/utils";
 import "./App.css";
 
 const contextUser = { email: "", password: "", isLoggedIn: false };
+const isDev =
+  typeof process !== "undefined" &&
+  process.env &&
+  process.env.NODE_ENV !== "production";
 
 function App() {
   const [displayDrawer, setDisplayDrawer] = useState(false);
@@ -44,7 +48,7 @@ function App() {
         if (!controller.signal.aborted) {
           setNotifications([]);
         }
-        if (import.meta.env.DEV) {
+        if (isDev) {
           console.error(error);
         }
       }
@@ -71,7 +75,7 @@ function App() {
         if (!controller.signal.aborted) {
           setCourses([]);
         }
-        if (import.meta.env.DEV) {
+        if (isDev) {
           console.error(error);
         }
       }
