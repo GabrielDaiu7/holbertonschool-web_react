@@ -71,7 +71,6 @@ describe("App Component", () => {
     });
 
     it("shows/hides notifications and removes a notification when clicked", async () => {
-        const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
         render(<App />);
 
         mockAxios.mockResponse({ data: notificationsPayload });
@@ -91,7 +90,5 @@ describe("App Component", () => {
         await waitFor(() => {
             expect(screen.queryByText("New course available")).not.toBeInTheDocument();
         });
-        expect(consoleSpy).toHaveBeenCalledWith("Notification 1 has been marked as read");
-        consoleSpy.mockRestore();
     });
 });

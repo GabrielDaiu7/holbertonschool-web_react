@@ -9,11 +9,11 @@ function WithLogging(WrappedComponent) {
 
     class WithLoggingComponent extends React.Component {
         componentDidMount() {
-            console.log(`Component ${wrappedName} is mounted`);
+            return null;
         }
 
         componentWillUnmount() {
-            console.log(`Component ${wrappedName} is going to unmount`);
+            return null;
         }
 
         render() {
