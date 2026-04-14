@@ -24,7 +24,7 @@ describe("App Component", () => {
         render(<App />);
 
         await waitFor(() => {
-            expect(mockAxios.get).toHaveBeenCalledWith("http://localhost:5173/notifications.json");
+            expect(mockAxios.get).toHaveBeenCalledWith("/notifications.json");
         });
 
         mockAxios.mockResponse({ data: notificationsPayload });
@@ -38,14 +38,14 @@ describe("App Component", () => {
         render(<App />);
 
         await waitFor(() => {
-            expect(mockAxios.get).toHaveBeenCalledWith("http://localhost:5173/courses.json");
+            expect(mockAxios.get).toHaveBeenCalledWith("/courses.json");
         });
 
         mockAxios.mockResponse({ data: notificationsPayload });
         mockAxios.mockResponse({ data: coursesPayload });
 
         const initialCourseCalls = mockAxios.get.mock.calls.filter(
-            ([url]) => url === "http://localhost:5173/courses.json"
+            ([url]) => url === "/courses.json"
         ).length;
 
         await userEvent.type(screen.getByLabelText(/Email/i), "test@test.com");
@@ -54,7 +54,7 @@ describe("App Component", () => {
 
         await waitFor(() => {
             const afterLoginCalls = mockAxios.get.mock.calls.filter(
-                ([url]) => url === "http://localhost:5173/courses.json"
+                ([url]) => url === "/courses.json"
             ).length;
             expect(afterLoginCalls).toBeGreaterThan(initialCourseCalls);
         });
@@ -64,7 +64,7 @@ describe("App Component", () => {
 
         await waitFor(() => {
             const afterLogoutCalls = mockAxios.get.mock.calls.filter(
-                ([url]) => url === "http://localhost:5173/courses.json"
+                ([url]) => url === "/courses.json"
             ).length;
             expect(afterLogoutCalls).toBeGreaterThan(initialCourseCalls + 1);
         });
