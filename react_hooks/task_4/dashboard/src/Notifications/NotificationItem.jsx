@@ -8,13 +8,22 @@ function NotificationItem({ id, type, value, html, markAsRead }) {
     };
 
     return (
-        <li
-            data-notification-type={type}
-            style={{ color: type === "urgent" ? "red" : "blue" }}
-            onClick={handleClick}
-        >
-            {html ? <span dangerouslySetInnerHTML={html} /> : value}
-        </li>
+        html ? (
+            <li
+                data-notification-type={type}
+                style={{ color: type === "urgent" ? "red" : "blue" }}
+                onClick={handleClick}
+                dangerouslySetInnerHTML={html}
+            />
+        ) : (
+            <li
+                data-notification-type={type}
+                style={{ color: type === "urgent" ? "red" : "blue" }}
+                onClick={handleClick}
+            >
+                {value}
+            </li>
+        )
     );
 }
 
