@@ -102,6 +102,16 @@ function App() {
     useEffect(() => {
         let isMounted = true;
 
+        if (!user.isLoggedIn) {
+            dispatch({
+                type: APP_ACTIONS.SET_COURSES,
+                payload: [],
+            });
+            return () => {
+                isMounted = false;
+            };
+        }
+
         const fetchCourses = async () => {
             try {
                 const response = await axios.get(COURSES_ENDPOINT);
