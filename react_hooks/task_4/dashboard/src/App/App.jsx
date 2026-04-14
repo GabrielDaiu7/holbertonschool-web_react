@@ -33,6 +33,40 @@ function normalizeListPayload(data) {
   return [];
 }
 
+function normalizeNotifications(data) {
+  const list = normalizeListPayload(data);
+  const seen = new Set();
+
+  return list
+    .map((notification, index) => {
+      const id = notification.id ?? notification._id ?? notification.guid ?? index + 1;
+      const value = notification.value ?? "";
+      const type = notification.type ?? "default";
+      const html =
+        id === 3 || id === "3"
+          ? { __html: getLatestNotification() }
+          : notification.html;
+
+      return {
+        ...notification,
+        id,
+        value,
+        type,
+        html,
+      };
+    })
+    .filter((notification) => {
+      const key = `${notification.id}|${notification.type}|${notification.value}|${
+        notification.html?.__html || ""
+      }`;
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.add(key);
+      return true;
+    });
+}
+
 function App() {
   const [displayDrawer, setDisplayDrawer] = useState(true);
   const [user, setUser] = useState(contextUser);
@@ -44,16 +78,7 @@ function App() {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(NOTIFICATIONS_ENDPOINT);
-        const data = normalizeListPayload(response.data);
-        const normalizedNotifications = data.map((notification) => {
-          if (notification.id === 3) {
-            return {
-              ...notification,
-              html: { __html: getLatestNotification() },
-            };
-          }
-          return notification;
-        });
+        const normalizedNotifications = normalizeNotifications(response.data);
         if (isMounted) {
           setNotifications(normalizedNotifications);
         }
