@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import axios from "axios";
 import CourseList from "../CourseList/CourseList";
 import "../CourseList/CourseList.css";
 import Footer from "../Footer/Footer";
@@ -10,16 +11,6 @@ import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBot
 import AppContext from "../Context/context";
 import "./App.css";
 
-const notificationsList = [
-  { id: 1, type: "default", value: "New course available" },
-  { id: 2, type: "urgent", value: "New resume available" },
-  {
-    id: 3,
-    type: "urgent",
-    html: { __html: "<strong>Urgent requirement</strong> - complete by EOD" },
-  },
-];
-
 const contextUser = { email: "", password: "", isLoggedIn: false };
 
 const courses = [
@@ -29,9 +20,30 @@ const courses = [
 ];
 
 function App() {
-  const [displayDrawer, setDisplayDrawer] = useState(true);
+  const [displayDrawer, setDisplayDrawer] = useState(false);
   const [user, setUser] = useState(contextUser);
-  const [notifications, setNotifications] = useState(notificationsList);
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    axios
+      .get("/notifications.json")
+      .then((response) => {
+        if (isMounted) {
+          setNotifications(response.data || []);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setNotifications([]);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
