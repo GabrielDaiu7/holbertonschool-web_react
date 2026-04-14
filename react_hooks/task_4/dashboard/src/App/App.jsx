@@ -9,41 +9,80 @@ import Notifications from "../Notifications/Notifications";
 import BodySection from "../BodySection/BodySection";
 import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBottom";
 import AppContext from "../Context/context";
+import { getLatestNotification } from "../utils/utils";
 import "./App.css";
 
 const contextUser = { email: "", password: "", isLoggedIn: false };
-
-const courses = [
-  { id: 1, name: "ES6", credit: "60" },
-  { id: 2, name: "Webpack", credit: "20" },
-  { id: 3, name: "React", credit: "40" },
-];
 
 function App() {
   const [displayDrawer, setDisplayDrawer] = useState(false);
   const [user, setUser] = useState(contextUser);
   const [notifications, setNotifications] = useState([]);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    let isMounted = true;
-
-    axios
-      .get("/notifications.json")
-      .then((response) => {
-        if (isMounted) {
-          setNotifications(response.data || []);
+    const controller = new AbortController();
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get("/notifications.json", {
+          signal: controller.signal,
+        });
+        const data = response.data || [];
+        const normalizedNotifications = data.map((notification) => {
+          if (notification.id === 3) {
+            return {
+              ...notification,
+              html: { __html: getLatestNotification() },
+            };
+          }
+          return notification;
+        });
+        if (!controller.signal.aborted) {
+          setNotifications(normalizedNotifications);
         }
-      })
-      .catch(() => {
-        if (isMounted) {
+      } catch (error) {
+        if (!controller.signal.aborted) {
           setNotifications([]);
         }
-      });
+        if (import.meta.env.DEV) {
+          console.error(error);
+        }
+      }
+    };
+
+    fetchNotifications();
 
     return () => {
-      isMounted = false;
+      controller.abort();
     };
   }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get("/courses.json", {
+          signal: controller.signal,
+        });
+        if (!controller.signal.aborted) {
+          setCourses(response.data || []);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setCourses([]);
+        }
+        if (import.meta.env.DEV) {
+          console.error(error);
+        }
+      }
+    };
+
+    fetchCourses();
+
+    return () => {
+      controller.abort();
+    };
+  }, [user]);
 
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
