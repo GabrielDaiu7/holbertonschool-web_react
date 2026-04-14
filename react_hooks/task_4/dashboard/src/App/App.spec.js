@@ -25,7 +25,7 @@ describe("App Component", () => {
 
         await waitFor(() => {
             expect(mockAxios.get).toHaveBeenCalledWith(
-                "/notifications.json",
+                "http://localhost:5173/notifications.json",
                 expect.any(Object)
             );
         });
@@ -42,7 +42,7 @@ describe("App Component", () => {
 
         await waitFor(() => {
             expect(mockAxios.get).toHaveBeenCalledWith(
-                "/courses.json",
+                "http://localhost:5173/courses.json",
                 expect.any(Object)
             );
         });
@@ -51,7 +51,7 @@ describe("App Component", () => {
         mockAxios.mockResponse({ data: coursesPayload });
 
         const initialCourseCalls = mockAxios.get.mock.calls.filter(
-            ([url]) => url === "/courses.json"
+            ([url]) => url === "http://localhost:5173/courses.json"
         ).length;
 
         await userEvent.type(screen.getByLabelText(/Email/i), "test@test.com");
@@ -60,7 +60,7 @@ describe("App Component", () => {
 
         await waitFor(() => {
             const afterLoginCalls = mockAxios.get.mock.calls.filter(
-                ([url]) => url === "/courses.json"
+                ([url]) => url === "http://localhost:5173/courses.json"
             ).length;
             expect(afterLoginCalls).toBeGreaterThan(initialCourseCalls);
         });
@@ -70,7 +70,7 @@ describe("App Component", () => {
 
         await waitFor(() => {
             const afterLogoutCalls = mockAxios.get.mock.calls.filter(
-                ([url]) => url === "/courses.json"
+                ([url]) => url === "http://localhost:5173/courses.json"
             ).length;
             expect(afterLogoutCalls).toBeGreaterThan(initialCourseCalls + 1);
         });

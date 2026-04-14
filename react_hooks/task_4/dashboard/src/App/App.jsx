@@ -17,6 +17,21 @@ const isDev =
   typeof process !== "undefined" &&
   process.env &&
   process.env.NODE_ENV !== "production";
+const NOTIFICATIONS_ENDPOINT = "http://localhost:5173/notifications.json";
+const COURSES_ENDPOINT = "http://localhost:5173/courses.json";
+
+function normalizeListPayload(data) {
+  if (Array.isArray(data)) {
+    return data;
+  }
+  if (data && Array.isArray(data.notifications)) {
+    return data.notifications;
+  }
+  if (data && Array.isArray(data.courses)) {
+    return data.courses;
+  }
+  return [];
+}
 
 function App() {
   const [displayDrawer, setDisplayDrawer] = useState(false);
@@ -28,10 +43,10 @@ function App() {
     const controller = new AbortController();
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get("/notifications.json", {
+        const response = await axios.get(NOTIFICATIONS_ENDPOINT, {
           signal: controller.signal,
         });
-        const data = response.data || [];
+        const data = normalizeListPayload(response.data);
         const normalizedNotifications = data.map((notification) => {
           if (notification.id === 3) {
             return {
@@ -65,11 +80,11 @@ function App() {
     const controller = new AbortController();
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("/courses.json", {
+        const response = await axios.get(COURSES_ENDPOINT, {
           signal: controller.signal,
         });
         if (!controller.signal.aborted) {
-          setCourses(response.data || []);
+          setCourses(normalizeListPayload(response.data));
         }
       } catch (error) {
         if (!controller.signal.aborted) {
