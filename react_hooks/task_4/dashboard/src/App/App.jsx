@@ -17,8 +17,8 @@ const isDev =
   typeof process !== "undefined" &&
   process.env &&
   process.env.NODE_ENV !== "production";
-const NOTIFICATIONS_ENDPOINT = "http://localhost:5173/notifications.json";
-const COURSES_ENDPOINT = "http://localhost:5173/courses.json";
+const NOTIFICATIONS_ENDPOINT = "/notifications.json";
+const COURSES_ENDPOINT = "/courses.json";
 
 function normalizeListPayload(data) {
   if (Array.isArray(data)) {
