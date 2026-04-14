@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Footer from "./Footer";
 import AppContext from "../Context/context";
 import { getCurrentYear } from "../utils/utils";
@@ -14,7 +15,7 @@ describe("Footer Component", () => {
         ).toBeInTheDocument();
     });
 
-    it("does NOT display contact link when logged out", () => {
+    it("does NOT display welcome/logout when logged out", () => {
         const contextValue = {
             user: { isLoggedIn: false },
         };
@@ -23,22 +24,47 @@ describe("Footer Component", () => {
                 <Footer />
             </AppContext.Provider>
         );
-        expect(screen.queryByText(/Contact us/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Welcome/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/logout/i)).not.toBeInTheDocument();
     });
 
-    it("displays contact link when logged in", () => {
+    it("displays welcome/logout when logged in", () => {
         const contextValue = {
             user: {
                 email: "test@test.com",
                 password: "password123",
                 isLoggedIn: true,
             },
+            logOut: jest.fn(),
         };
         render(
             <AppContext.Provider value={contextValue}>
                 <Footer />
             </AppContext.Provider>
         );
-        expect(screen.getByText(/Contact us/i)).toBeInTheDocument();
+
+        expect(screen.getByText(/Welcome test@test.com/i)).toBeInTheDocument();
+        expect(screen.getByText(/logout/i)).toBeInTheDocument();
+    });
+
+    it("calls logOut when logout link is clicked", async () => {
+        const mockLogOut = jest.fn();
+        const contextValue = {
+            user: {
+                email: "test@test.com",
+                password: "password123",
+                isLoggedIn: true,
+            },
+            logOut: mockLogOut,
+        };
+
+        render(
+            <AppContext.Provider value={contextValue}>
+                <Footer />
+            </AppContext.Provider>
+        );
+
+        await userEvent.click(screen.getByText(/logout/i));
+        expect(mockLogOut).toHaveBeenCalled();
     });
 });

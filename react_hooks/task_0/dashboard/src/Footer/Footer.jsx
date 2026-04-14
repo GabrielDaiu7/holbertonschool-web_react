@@ -1,11 +1,10 @@
-/* eslint-disable */
 import React, { useContext } from "react";
 import { getCurrentYear, getFooterCopy } from "../utils/utils";
 import AppContext from "../Context/context";
 import "./Footer.css";
 
 const Footer = () => {
-    const { user } = useContext(AppContext);
+    const { user, logOut } = useContext(AppContext);
 
     return (
         <div className="App-footer">
@@ -14,7 +13,11 @@ const Footer = () => {
             </p>
             {user.isLoggedIn && (
                 <p>
-                    <a href="#contact">Contact us</a>
+                    Welcome {user.email} (
+                    <a href="#logout" onClick={logOut}>
+                        logout
+                    </a>
+                    )
                 </p>
             )}
         </div>
