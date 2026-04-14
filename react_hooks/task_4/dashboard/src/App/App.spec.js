@@ -24,10 +24,7 @@ describe("App Component", () => {
         render(<App />);
 
         await waitFor(() => {
-            expect(mockAxios.get).toHaveBeenCalledWith(
-                "http://localhost:5173/notifications.json",
-                expect.any(Object)
-            );
+            expect(mockAxios.get).toHaveBeenCalledWith("http://localhost:5173/notifications.json");
         });
 
         mockAxios.mockResponse({ data: notificationsPayload });
@@ -41,10 +38,7 @@ describe("App Component", () => {
         render(<App />);
 
         await waitFor(() => {
-            expect(mockAxios.get).toHaveBeenCalledWith(
-                "http://localhost:5173/courses.json",
-                expect.any(Object)
-            );
+            expect(mockAxios.get).toHaveBeenCalledWith("http://localhost:5173/courses.json");
         });
 
         mockAxios.mockResponse({ data: notificationsPayload });

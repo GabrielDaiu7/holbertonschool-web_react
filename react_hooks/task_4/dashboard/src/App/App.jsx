@@ -34,18 +34,16 @@ function normalizeListPayload(data) {
 }
 
 function App() {
-  const [displayDrawer, setDisplayDrawer] = useState(false);
+  const [displayDrawer, setDisplayDrawer] = useState(true);
   const [user, setUser] = useState(contextUser);
   const [notifications, setNotifications] = useState([]);
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    const controller = new AbortController();
+    let isMounted = true;
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get(NOTIFICATIONS_ENDPOINT, {
-          signal: controller.signal,
-        });
+        const response = await axios.get(NOTIFICATIONS_ENDPOINT);
         const data = normalizeListPayload(response.data);
         const normalizedNotifications = data.map((notification) => {
           if (notification.id === 3) {
@@ -56,11 +54,11 @@ function App() {
           }
           return notification;
         });
-        if (!controller.signal.aborted) {
+        if (isMounted) {
           setNotifications(normalizedNotifications);
         }
       } catch (error) {
-        if (!controller.signal.aborted) {
+        if (isMounted) {
           setNotifications([]);
         }
         if (isDev) {
@@ -72,22 +70,20 @@ function App() {
     fetchNotifications();
 
     return () => {
-      controller.abort();
+      isMounted = false;
     };
   }, []);
 
   useEffect(() => {
-    const controller = new AbortController();
+    let isMounted = true;
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(COURSES_ENDPOINT, {
-          signal: controller.signal,
-        });
-        if (!controller.signal.aborted) {
+        const response = await axios.get(COURSES_ENDPOINT);
+        if (isMounted) {
           setCourses(normalizeListPayload(response.data));
         }
       } catch (error) {
-        if (!controller.signal.aborted) {
+        if (isMounted) {
           setCourses([]);
         }
         if (isDev) {
@@ -99,7 +95,7 @@ function App() {
     fetchCourses();
 
     return () => {
-      controller.abort();
+      isMounted = false;
     };
   }, [user]);
 
