@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "ignoreDeprecations": "6.0",
+    "baseUrl": "."
+  },
+  "exclude": ["node_modules"]
+}
